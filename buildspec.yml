@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - docker build -t skaan94/file-service-test -f ./Dockerfile.dev .
+      - docker run -e CI=true skaan94/file-service-test npm run test -- --coverage
+  build:
+    commands:
+      - docker build -t skaan94/file-service .
+  post_build:
+    commands:
+      # Log in to the docker CLI
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+      # Take those images and push to Docker Hub
+      - docker push skaan94/file-service
