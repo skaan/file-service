@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
       const res = await this.client.send('check', { jwt }).toPromise<boolean>();
       return res;
     } catch(err) {
-      console.log(err)
+      console.error(err)
       return false;
     }
   }
